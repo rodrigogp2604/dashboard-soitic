@@ -88,10 +88,9 @@ NEXT_PUBLIC_API_URL=http://localhost:8080
 
 ## Como rodar localmente
 
-### Com Docker (recomendado)
 ```bash
 git clone https://github.com/rodrigogp2604/dashboard-soitic.git
-cd dashboard-soitic
+cd dashboard-soitic/soitic-test-repo
 docker compose up --build
 ```
 
@@ -108,23 +107,6 @@ Acesse:
 - **MySQL:** localhost:3307 (user: `user`, password: `password`, database: `clinica_db`)
 
 > As migrations e seeds rodam automaticamente — nenhum comando adicional necessário.
-
-### Sem Docker (apenas frontend)
-
-Pré-requisitos adicionais:
-| Ferramenta | Versão mínima | Instalação |
-|-----------|--------------|------------|
-| Node.js | 20+ | [nodejs.org](https://nodejs.org) |
-| npm | 9+ | Incluído com Node.js |
-```bash
-cd dashboard-soitic/src
-npm install
-npm run dev
-```
-
-Acesse `http://localhost:3000`
-
-> Nesse modo o frontend usa os JSONs locais em `data/` como fonte de dados. O backend não estará disponível.
 
 ## Estrutura do Projeto
 ```
