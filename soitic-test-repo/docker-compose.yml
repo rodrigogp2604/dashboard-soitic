@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: node:20-alpine
+    container_name: clinica_frontend
+    working_dir: /app
+    volumes:
+      - ./src:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev -- -H 0.0.0.0"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: clinica_backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./data:/var/www/data
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: clinica_db
+      DB_USER: user
+      DB_PASSWORD: password
+
+  db:
+    image: mysql:8.0
+    container_name: clinica_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: clinica_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
