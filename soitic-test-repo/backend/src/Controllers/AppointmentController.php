@@ -3,20 +3,28 @@
 namespace App\Controllers;
 
 use App\Models\Appointment;
+use App\Services\AppointmentServices;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class AppointmentController
 {
+    private AppointmentServices $service;    
+
+    public function __construct() {
+        $this->service = new AppointmentServices();
+    }
+
     public function index(Request $request, Response $response, array $args)
     {
         $appointments = Appointment::with('patient')
             ->orderBy('appointment_date', 'desc')
-            ->get();
+            ->get()
+            ->toArray();
 
         $response->getBody()->write(json_encode([
             'status' => true,
-            'data' => $appointments
+            'data' => $this->service->mapAppointments($appointments)
         ]));
 
         return $response->withHeader('Content-Type', 'application/json')
@@ -36,7 +44,7 @@ class AppointmentController
 
         $response->getBody()->write(json_encode([
             'status' => true,
-            'data' => $appointments
+            'data' => $this->service->mapAppointment($appointments)
         ]));
 
         return $response->withHeader('Content-Type', 'application/json')

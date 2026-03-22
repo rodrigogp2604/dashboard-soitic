@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '@/components/generic/Modal';
 import Input from '@/components/generic/Input';
 import Select from '@/components/generic/Select';
@@ -8,29 +8,41 @@ import { AppointmentStatus, AppointmentType } from '@/types/common/appointment';
 import { statusConfig, statusOptions, typeOptions } from '@/lib/appointments/utils';
 import { getPatientsOptions } from '@/lib/patients/utils';
 import { useAppointmentModal } from '@/components/appointments/AppointmentModalContext';
+import { storeAppointment } from '@/services/dashboard/appointment';
+import { SelectOption } from '@/types/generics';
 
 export default function AppointmentModal() {
-    const { isOpen, close } = useAppointmentModal();
-    const patients = getPatientsOptions();
+    const { isOpen, close, notifyCreated } = useAppointmentModal();
 
+    const [patients, setPatients] = useState<SelectOption[]>([]);
     const [patientId, setPatientId] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [type, setType] = useState<AppointmentType>('primeira consulta');
     const [status, setStatus] = useState<AppointmentStatus>('confirmado');
 
-    function handleSubmit() {
+    useEffect(() => {
+        async function loadPatients() {
+            const options = await getPatientsOptions();
+            setPatients(options);
+        }
+        loadPatients();
+    }, []);
+
+    async function handleSubmit() {
         if (!patientId || !date || !time) return;
 
-        // Será substituído pela chamada à API quando o backend estiver pronto
-        console.log({
-            patientId: parseInt(patientId),
-            appointmentDate: `${date}T${time}:00`,
-            type,
+        const data = await storeAppointment({
+            patient_id: parseInt(patientId),
+            appointment_date: `${date} ${time}:00`,
             status,
+            type,
         });
 
-        handleClose();
+        if (data.status) {
+            notifyCreated();
+            handleClose();
+        }
     }
 
     function handleClose() {
@@ -81,7 +93,7 @@ export default function AppointmentModal() {
                                 <button
                                     key={o.value}
                                     onClick={() => setStatus(o.value)}
-                                    className="flex-1 py-2.5 rounded-xl text-xs font-semibold font-headline transition-all flex items-center justify-center gap-1.5"
+                                    className="cursor-pointer flex-1 py-2.5 rounded-xl text-xs font-semibold font-headline transition-all flex items-center justify-center gap-1.5"
                                     style={{
                                         backgroundColor: isActive ? config.bg : 'var(--color-surface-container)',
                                         color: isActive ? config.color : 'var(--color-outline)',
@@ -99,7 +111,7 @@ export default function AppointmentModal() {
                 <div className="flex gap-3 mt-2">
                     <button
                         onClick={handleClose}
-                        className="flex-1 py-3 rounded-xl font-headline font-semibold text-sm transition-all"
+                        className="cursor-pointer flex-1 py-3 rounded-xl font-headline font-semibold text-sm transition-all"
                         style={{
                             backgroundColor: 'var(--color-surface-container)',
                             color: 'var(--color-outline)',
@@ -110,7 +122,7 @@ export default function AppointmentModal() {
                     <button
                         onClick={handleSubmit}
                         disabled={!patientId || !date || !time}
-                        className="flex-1 py-3 rounded-xl font-headline font-semibold text-sm text-white transition-all disabled:opacity-40"
+                        className="cursor-pointer flex-1 py-3 rounded-xl font-headline font-semibold text-sm text-white transition-all disabled:opacity-40"
                         style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-container))' }}
                     >
                         Confirmar

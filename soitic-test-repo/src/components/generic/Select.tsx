@@ -59,7 +59,7 @@ export default function Select({ label, value, onChange, options, placeholder }:
                 ref={buttonRef}
                 type="button"
                 onClick={handleOpen}
-                className="w-full rounded-xl py-3 px-4 text-sm text-left flex items-center justify-between transition-all"
+                className="cursor-pointer w-full rounded-xl py-3 px-4 text-sm text-left flex items-center justify-between transition-all"
                 style={{
                     backgroundColor: 'var(--color-surface-container-low)',
                     color: selected ? 'var(--color-on-surface)' : 'var(--color-outline)',
