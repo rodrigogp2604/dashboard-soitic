@@ -30,8 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env.local
+# Autorizei o commit do env de proposito, ja que é um ambiente seguro
+!.env.local
 
 # vercel
 .vercel

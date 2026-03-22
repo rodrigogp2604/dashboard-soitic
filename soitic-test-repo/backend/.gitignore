@@ -1,2 +1,4 @@
 vendor/
-.env
+
+# Autorizei o commit do env de proposito, ja que é um ambiente seguro
+!.env
