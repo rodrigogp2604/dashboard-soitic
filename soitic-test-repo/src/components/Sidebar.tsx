@@ -6,10 +6,7 @@ import { useState } from 'react';
 import { useAppointmentModal } from './appointments/AppointmentModalContext';
 
 const navItems = [
-  { label: 'Visão Geral', icon: 'dashboard', href: '/' },
-  { label: 'Agendamentos', icon: 'calendar_today', href: '/agendamentos' },
-  { label: 'Pacientes', icon: 'group', href: '/pacientes' },
-  { label: 'Análises', icon: 'analytics', href: '/analises' },
+  { label: 'Dashboard', icon: 'dashboard', href: '/' },
 ];
 
 export default function Sidebar() {
@@ -29,9 +26,6 @@ export default function Sidebar() {
           <h1 className="font-headline text-lg font-bold" style={{ color: 'var(--color-primary-container)' }}>
             Clínica Médica
           </h1>
-          <p className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: 'var(--color-outline)' }}>
-            Suíte Médica
-          </p>
         </div>
       </div>
 
@@ -54,32 +48,16 @@ export default function Sidebar() {
             </Link>
           );
         })}
+
+        <button
+          onClick={openModal}
+          className="mb-8 w-full py-4 text-white rounded-xl font-headline font-semibold text-sm shadow-lg active:scale-95 transition-transform cursor-pointer"
+          style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-container))' }}
+        >
+          Novo Agendamento
+        </button>
       </nav>
 
-      <button
-        onClick={openModal}
-        className="mb-8 w-full py-4 text-white rounded-xl font-headline font-semibold text-sm shadow-lg active:scale-95 transition-transform"
-        style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-container))' }}
-      >
-        Novo Agendamento
-      </button>
-
-      <div className="space-y-2 pt-6" style={{ borderTop: '1px solid var(--color-outline-variant)' }}>
-        {[
-          { label: 'Configurações', icon: 'settings' },
-          { label: 'Suporte', icon: 'help_outline' },
-        ].map((item) => (
-          <Link
-            key={item.label}
-            href="#"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors text-sm font-headline"
-            style={{ color: 'var(--color-outline)' }}
-          >
-            <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
-            <span>{item.label}</span>
-          </Link>
-        ))}
-      </div>
     </>
   );
 

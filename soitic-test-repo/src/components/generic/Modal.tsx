@@ -38,7 +38,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-xl transition-colors"
+                        className="cursor-pointer p-2 rounded-xl transition-colors"
                         style={{ color: 'var(--color-outline)' }}
                     >
                         <span className="material-symbols-outlined">close</span>

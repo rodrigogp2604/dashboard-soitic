@@ -72,7 +72,7 @@ export default function AppointmentList({ appointments, isLoading = false }: App
                                     {appointment.patientName}
                                 </p>
                                 <p className="text-[11px] mt-0.5 truncate" style={{ color: 'var(--color-outline)' }}>
-                                    CPF não disponível
+                                    CPF: {appointment.cpf}
                                 </p>
                             </div>
                         </div>
